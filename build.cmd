@@ -1,0 +1,1 @@
+streamdeck_sdk build -i nl.koenvh.screendeck.sdPlugin

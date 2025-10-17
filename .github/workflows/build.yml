@@ -1,0 +1,31 @@
+name: build
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install Stream Deck SDK
+        run: pip install "streamdeck-sdk[dev]"
+      - name: Install requirements
+        run: pip install -r nl.koenvh.screendeck.sdPlugin/code/requirements.txt
+      - name: Build plug-in
+        run: streamdeck_sdk build -i nl.koenvh.screendeck.sdPlugin
+      - name: Get subfolder name
+        shell: pwsh
+        run: |
+          $subfolder = Get-ChildItem -Path "releases" -Directory | Select-Object -ExpandProperty Name
+          echo "SUBFOLDER_NAME=$subfolder" >> $env:GITHUB_ENV
+      - name: Make release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: "releases/${{ env.SUBFOLDER_NAME }}/nl.koenvh.screendeck.streamDeckPlugin

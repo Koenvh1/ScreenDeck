@@ -77,7 +77,6 @@ class MyAction(Action):
             stream = streams["worst"]
 
         media = stream.to_url()
-        # media = "F:/Videos/初音ミク新型3Dモデル登場！『ぶれないアイで』-Burenai ai de- ARライブもう見た？ 【デジアイ】.mp4"
         ff_opts = {
             # "infbuf": False,
             "framedrop": True,

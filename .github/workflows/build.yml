@@ -28,4 +28,4 @@ jobs:
       - name: Make release
         uses: softprops/action-gh-release@v2
         with:
-          files: "releases/${{ env.SUBFOLDER_NAME }}/nl.koenvh.screendeck.streamDeckPlugin
+          files: "releases/${{ env.SUBFOLDER_NAME }}/nl.koenvh.screendeck.streamDeckPlugin"

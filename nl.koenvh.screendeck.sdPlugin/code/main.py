@@ -112,20 +112,34 @@ class MyAction(Action):
                     w, h = img.get_size()
                     frame = Image.frombuffer("RGB", (w, h), frame2, 'raw', "RGB", 0, 1)
                 else:
-                    time.sleep(0.01)
+                    time.sleep(0.005)
                     continue
             else:
                 break
 
             gap = 22
 
-            width = (5 * 72) + (4 * gap)
-            height = (3 * 72) + (2 * gap)
-            image = frame.resize((width, height))
+            resized_frame = {}
+            min_x = min(c["x"] for c in self.contexts)
+            min_y = min(c["y"] for c in self.contexts)
+            max_x = max(c["x"] for c in self.contexts)
+            max_y = max(c["y"] for c in self.contexts)
 
             for c in self.contexts:
-                x = int(c["x"] * (72 + gap))
-                y = int(c["y"] * (72 + gap))
+                # d = self.devices.get(c["d"])
+                # if not d:
+                #     continue
+
+                width = ((max_x - min_x + 1) * 72) + ((max_x - min_x) * gap)
+                height = ((max_y - min_y + 1) * 72) + ((max_y - min_y) * gap)
+                if (width, height) in resized_frame:
+                    image = resized_frame[(width, height)]
+                else:
+                    image = frame.resize((width, height))
+                    resized_frame[(width, height)] = image
+
+                x = int((c["x"] - min_x) * (72 + gap))
+                y = int((c["y"] - min_y) * (72 + gap))
 
                 box = (x, y, x + 72, y + 72)
                 cropped = image.crop(box)

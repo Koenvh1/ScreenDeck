@@ -23,7 +23,7 @@
   "Description": "Show a livestream on your StreamDeck.",
   "Icon": "assets/video_icon",
   "Name": "ScreenDeck",
-  "Version": "0.1.0",
+  "Version": "0.2.0",
   "SDKVersion": 2,
   "OS": [
     {

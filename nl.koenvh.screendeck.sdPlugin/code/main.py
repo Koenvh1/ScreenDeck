@@ -18,6 +18,7 @@ from streamdeck_sdk import (
 
 class MyAction(Action):
     UUID = "nl.koenvh.screendeck.myaction"
+    devices = {}
     contexts = []
     stream = None
     thread = None
@@ -27,25 +28,41 @@ class MyAction(Action):
         for c in self.contexts:
             self.get_settings(context=c["c"])
 
-    def on_did_receive_settings(self, obj: events_received_objs.DidReceiveSettings) -> None:
-        if obj.payload.settings["stream"]:
-            self.stream = obj.payload.settings["stream"]
-
-    def on_will_appear(self, obj: events_received_objs.WillAppear) -> None:
-        c = {
-            "x": obj.payload.coordinates.column,
-            "y": obj.payload.coordinates.row,
-            "c": obj.context
-        }
-        self.contexts.append(c)
-        print(c)
-
-    def on_will_disappear(self, obj: events_received_objs.WillDisappear) -> None:
-        self.contexts = [x for x in self.contexts if x["c"] != obj.context]
+    def check_disconnect(self):
         if len(self.contexts) == 0 and self.thread:
             t = time.time()
             self.thread_id = t
             self.thread = None
+
+    def on_did_receive_settings(self, obj: events_received_objs.DidReceiveSettings) -> None:
+        if obj.payload.settings["stream"]:
+            self.stream = obj.payload.settings["stream"]
+
+    def on_device_did_connect(self, obj: events_received_objs.DeviceDidConnect) -> None:
+        self.devices[obj.device] = {
+            "columns": obj.deviceInfo.size.columns,
+            "rows": obj.deviceInfo.size.rows
+        }
+
+    def on_device_did_disconnect(self, obj: events_received_objs.DeviceDidDisconnect) -> None:
+        self.devices.pop(obj.device)
+        self.contexts = [x for x in self.contexts if x["d"] != obj.device]
+        self.check_disconnect()
+
+    def on_will_appear(self, obj: events_received_objs.WillAppear) -> None:
+        if obj.payload.coordinates:
+            c = {
+                "x": obj.payload.coordinates.column,
+                "y": obj.payload.coordinates.row,
+                "d": obj.device,
+                "c": obj.context
+            }
+            self.contexts.append(c)
+            print(c)
+
+    def on_will_disappear(self, obj: events_received_objs.WillDisappear) -> None:
+        self.contexts = [x for x in self.contexts if x["c"] != obj.context]
+        self.check_disconnect()
 
     def on_key_down(self, obj: events_received_objs.KeyDown) -> None:
         self.request_settings()

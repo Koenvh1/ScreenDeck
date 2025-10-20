@@ -14,16 +14,16 @@
       "Controllers": [
         "Keypad"
       ],
-      "Tooltip": "Show a livestream on your StreamDeck.",
-      "UserTitleEnabled": true
+      "Tooltip": "Show a (live)stream on your StreamDeck.",
+      "UserTitleEnabled": false
     }
   ],
   "Author": "Koenvh",
   "CodePath": "run.sh",
-  "Description": "Show a livestream on your StreamDeck.",
+  "Description": "Show a (live)stream on your StreamDeck. Combine one or multiple tiles together to turn your Stream Deck into a display you can play video on.",
   "Icon": "assets/video_icon",
   "Name": "ScreenDeck",
-  "Version": "0.2.0",
+  "Version": "0.2.1",
   "SDKVersion": 2,
   "OS": [
     {

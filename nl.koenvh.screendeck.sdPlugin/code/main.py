@@ -86,10 +86,10 @@ class MyAction(Action):
             return
 
         streams = streamlink.streams(url)
-        if "360p" in streams:
-            stream = streams["360p"]
-        elif "480p" in streams:
+        if "480p" in streams:
             stream = streams["480p"]
+        elif "360p" in streams:
+            stream = streams["360p"]
         else:
             stream = streams["worst"]
 

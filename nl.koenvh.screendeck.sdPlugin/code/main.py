@@ -3,7 +3,6 @@ import io
 import threading
 import time
 
-# import cv2
 import streamlink
 from PIL import Image
 from ffpyplayer.player import MediaPlayer

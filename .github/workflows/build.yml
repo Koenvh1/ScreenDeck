@@ -47,6 +47,8 @@ jobs:
         run: pip install -U pyinstaller
       - name: Install requirements
         run: pip install -r nl.koenvh.screendeck.sdPlugin/code/requirements.txt
+      - name: Make the script files executable
+        run: chmod +x build.sh
       - name: Build plug-in
         run: ./build.sh
       - name: Get subfolder name

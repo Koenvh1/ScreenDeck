@@ -1,5 +1,4 @@
 streamdeck-sdk>=1.2.0
-opencv-python
-streamlink
-ffpyplayer
-pillow
+streamlink~=7.6.0
+ffpyplayer~=4.5.3
+pillow~=12.0.0

@@ -32,3 +32,29 @@ jobs:
         with:
           generate_release_notes: true
           files: "releases/${{ env.SUBFOLDER_NAME }}/nl.koenvh.screendeck.streamDeckPlugin"
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install Stream Deck SDK
+        run: pip install "streamdeck-sdk[dev]"
+      - name: Install PyInstaller
+        run: pip install -U pyinstaller
+      - name: Install requirements
+        run: pip install -r nl.koenvh.screendeck.sdPlugin/code/requirements.txt
+      - name: Build plug-in
+        run: ./build.sh
+      - name: Get subfolder name
+        run: |
+          subfolder=$(find releases -type d -depth 1 -exec basename {} \;)
+          echo "SUBFOLDER_NAME=$subfolder" >> "$GITHUB_ENV"
+      - name: Make release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: "releases/${{ env.SUBFOLDER_NAME }}/nl.koenvh.screendeck.streamDeckPlugin"

@@ -14,17 +14,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Install PyInstaller build dependencies
-        run: |
-          python -m pip install --upgrade pip wheel setuptools
-          python -m pip install pypiwin32 pefile
       - name: Install Visual Studio Build Tools
         uses: microsoft/setup-msbuild@v2
-      - name: Make PyInstaller recompile bootloader
-        run: |
-          echo "PYINSTALLER_COMPILE_BOOTLOADER=true" >> $env:GITHUB_ENV
       - name: Install PyInstaller
-        run: pip install -U pyinstaller
+        run: PYINSTALLER_COMPILE_BOOTLOADER=1 pip install -U git+https://github.com/pyinstaller/pyinstaller.git@v6.16.0
       - name: Install Stream Deck SDK
         run: pip install "streamdeck-sdk[dev]"
       - name: Install requirements

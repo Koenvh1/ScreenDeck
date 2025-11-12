@@ -8,19 +8,36 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Install Visual Studio Build Tools
-        uses: microsoft/setup-msbuild@v2
+      - name: Checkout PyInstaller source
+        uses: actions/checkout@v4
+        with:
+          repository: pyinstaller/pyinstaller
+          path: pyinstaller
+          ref: v6.16.0
+      - name: Install PyInstallerbuild dependencies
+        run: |
+          python -m pip install --upgrade pip wheel setuptools
+          python -m pip install pypiwin32 pefile
       - name: Make PyInstaller recompile bootloader
         run: |
           echo "PYINSTALLER_COMPILE_BOOTLOADER=1" >> $env:GITHUB_ENV
-      - name: Install PyInstaller
-        run: pip install -U git+https://github.com/pyinstaller/pyinstaller.git@v6.16.0
+      - name: Install Visual Studio Build Tools
+        uses: microsoft/setup-msbuild@v2
+      - name: Build bootloader
+        working-directory: pyinstaller/bootloader
+        run: |
+          python ./waf all --target-arch=64bit --no-lsb
+      - name: Install PyInstaller (with custom bootloader)
+        working-directory: pyinstaller
+        run: |
+          python -m pip install .
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Install Stream Deck SDK
         run: pip install "streamdeck-sdk[dev]"
       - name: Install requirements

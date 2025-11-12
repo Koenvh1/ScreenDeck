@@ -20,7 +20,7 @@ jobs:
         run: |
           echo "PYINSTALLER_COMPILE_BOOTLOADER=1" >> $env:GITHUB_ENV
       - name: Install PyInstaller
-        run: PYINSTALLER_COMPILE_BOOTLOADER=1 pip install -U git+https://github.com/pyinstaller/pyinstaller.git@v6.16.0
+        run: pip install -U git+https://github.com/pyinstaller/pyinstaller.git@v6.16.0
       - name: Install Stream Deck SDK
         run: pip install "streamdeck-sdk[dev]"
       - name: Install requirements

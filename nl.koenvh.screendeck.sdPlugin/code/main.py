@@ -57,7 +57,6 @@ class MyAction(Action):
                 "c": obj.context
             }
             self.contexts.append(c)
-            print(c)
 
     def on_will_disappear(self, obj: events_received_objs.WillDisappear) -> None:
         self.contexts = [x for x in self.contexts if x["c"] != obj.context]
@@ -125,10 +124,6 @@ class MyAction(Action):
             max_y = max(c["y"] for c in self.contexts)
 
             for c in self.contexts:
-                # d = self.devices.get(c["d"])
-                # if not d:
-                #     continue
-
                 width = ((max_x - min_x + 1) * 72) + ((max_x - min_x) * gap)
                 height = ((max_y - min_y + 1) * 72) + ((max_y - min_y) * gap)
                 if (width, height) in resized_frame:

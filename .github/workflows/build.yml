@@ -11,13 +11,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.14'
+          python-version: '3.13'
       - name: Checkout PyInstaller source
         uses: actions/checkout@v4
         with:
           repository: pyinstaller/pyinstaller
           path: pyinstaller
-          ref: v6.16.0
+          ref: v6.14.2
       - name: Install PyInstaller build dependencies
         run: |
           pip install --upgrade pip wheel setuptools

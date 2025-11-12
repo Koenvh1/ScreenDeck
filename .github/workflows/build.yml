@@ -21,7 +21,7 @@ jobs:
       - name: Install PyInstaller build dependencies
         run: |
           pip install --upgrade pip wheel setuptools
-          pip install pypiwin32 pefile pywin32-ctypes packaging
+          pip install pypiwin32 pefile pywin32-ctypes packaging altgraph pyinstaller-hooks-contrib
       - name: Make PyInstaller recompile bootloader
         run: |
           echo "PYINSTALLER_COMPILE_BOOTLOADER=1" >> $env:GITHUB_ENV

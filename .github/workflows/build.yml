@@ -16,6 +16,9 @@ jobs:
           python-version: '3.13'
       - name: Install Visual Studio Build Tools
         uses: microsoft/setup-msbuild@v2
+      - name: Make PyInstaller recompile bootloader
+        run: |
+          echo "PYINSTALLER_COMPILE_BOOTLOADER=1" >> $env:GITHUB_ENV
       - name: Install PyInstaller
         run: PYINSTALLER_COMPILE_BOOTLOADER=1 pip install -U git+https://github.com/pyinstaller/pyinstaller.git@v6.16.0
       - name: Install Stream Deck SDK

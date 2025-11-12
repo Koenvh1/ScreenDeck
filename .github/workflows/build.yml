@@ -18,7 +18,7 @@ jobs:
           repository: pyinstaller/pyinstaller
           path: pyinstaller
           ref: v6.16.0
-      - name: Install PyInstallerbuild dependencies
+      - name: Install PyInstaller build dependencies
         run: |
           pip install --upgrade pip wheel setuptools
           pip install pypiwin32 pefile
@@ -30,11 +30,11 @@ jobs:
       - name: Build bootloader
         working-directory: pyinstaller/bootloader
         run: |
-          python ./waf all --target-arch=64bit
+          python ./waf all
       - name: Install PyInstaller (with custom bootloader)
         working-directory: pyinstaller
         run: |
-          pip install .
+          python setup.py install
 
       - name: Checkout repository
         uses: actions/checkout@v4

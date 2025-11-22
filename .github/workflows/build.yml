@@ -8,36 +8,16 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Unzip Python Embedded
+        run: Expand-Archive -Path nl.koenvh.screendeck.sdPlugin\python312-embedded.zip -DestinationPath nl.koenvh.screendeck.sdPlugin\python312-embedded
+      - name: Remove Python Embedded zip
+        run: Remove-Item -Path nl.koenvh.screendeck.sdPlugin\python312-embedded.zip
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
-      - name: Checkout PyInstaller source
-        uses: actions/checkout@v4
-        with:
-          repository: pyinstaller/pyinstaller
-          path: pyinstaller
-          ref: v6.14.2
-      - name: Install PyInstaller build dependencies
-        run: |
-          pip install --upgrade pip wheel setuptools
-          pip install pypiwin32 pefile==v2023.2.7 pywin32-ctypes packaging altgraph pyinstaller-hooks-contrib
-      - name: Make PyInstaller recompile bootloader
-        run: |
-          echo "PYINSTALLER_COMPILE_BOOTLOADER=1" >> $env:GITHUB_ENV
-      - name: Install Visual Studio Build Tools
-        uses: microsoft/setup-msbuild@v2
-      - name: Build bootloader
-        working-directory: pyinstaller/bootloader
-        run: |
-          python ./waf all
-      - name: Install PyInstaller (with custom bootloader)
-        working-directory: pyinstaller
-        run: |
-          python setup.py install
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
+          python-version: '3.12'
       - name: Install Stream Deck SDK
         run: pip install "streamdeck-sdk[dev]"
       - name: Install requirements

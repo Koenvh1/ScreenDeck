@@ -83,21 +83,24 @@ class MyAction(Action):
                 self.show_alert(context=c["c"])
             return
 
-        streams = streamlink.streams(url)
-        if "480p" in streams:
-            stream = streams["480p"]
-        elif "360p" in streams:
-            stream = streams["360p"]
-        else:
-            stream = streams["worst"]
+        try:
+            streams = streamlink.streams(url)
+            if "480p" in streams:
+                stream = streams["480p"]
+            elif "360p" in streams:
+                stream = streams["360p"]
+            else:
+                stream = streams["worst"]
 
-        media = stream.to_url()
+            media = stream.to_url()
+        except:
+            media = url
+
         ff_opts = {
             # "infbuf": False,
             "framedrop": True,
         }
         player = MediaPlayer(media, ff_opts=ff_opts)
-
 
         while t == self.thread_id:
             frame, val = player.get_frame()

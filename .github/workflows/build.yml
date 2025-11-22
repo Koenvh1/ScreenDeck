@@ -11,7 +11,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Unzip Python Embedded
-        run: Expand-Archive -Path nl.koenvh.screendeck.sdPlugin\python312-embedded.zip -DestinationPath nl.koenvh.screendeck.sdPlugin\python312-embedded
+        run: Expand-Archive -Path nl.koenvh.screendeck.sdPlugin\python312-embedded.zip -DestinationPath nl.koenvh.screendeck.sdPlugin
       - name: Remove Python Embedded zip
         run: Remove-Item -Path nl.koenvh.screendeck.sdPlugin\python312-embedded.zip
       - name: Set up Python

@@ -28,6 +28,32 @@ def main():
                 required=False,
                 placeholder="https://www.twitch.tv/Koenvh"
             ),
+            Radio(
+                label="Button role",
+                uid="role",
+                items=[
+                    RadioItem(
+                        value="Start/Stop",
+                        label="Start/Stop",
+                        checked=True,
+                    ),
+                    RadioItem(
+                        value="Play/Pause",
+                        label="Play/Pause",
+                        checked=False,
+                    ),
+                    RadioItem(
+                        value="Volume Up",
+                        label="Volume Up",
+                        checked=False,
+                    ),
+                    RadioItem(
+                        value="Volume Down",
+                        label="Volume Down",
+                        checked=False,
+                    ),
+                ]
+            )
         ]
     )
     pi.build(output_dir=OUTPUT_DIR, template=TEMPLATE)

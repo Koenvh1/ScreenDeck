@@ -17,7 +17,7 @@
             <div class="sdpi-item">
             <details class="message info" >
                 <summary>How it works</summary>
-                <div id="info_howto"><p>Set this tile to all the tiles on your Stream Deck. It will automatically play the right video part on the right tile. You can add your own tiles too, the video will simply be missing there. Press once on any of the streaming tiles to start the video, and press again to stop the video.</p></div>
+                <div id="info_howto"><p>Set this tile to all the tiles on your Stream Deck. It will automatically play the right video part on the right tile. You can add your own tiles too, the video will simply be missing there. Press once on any of the streaming tiles to start the video, and press again to stop the video. You may need to refresh the profile or page after making changes.</p></div>
             </details>
         </div>
         <div class="sdpi-item">
@@ -30,6 +30,39 @@
         <div class="sdpi-item-label">Stream URL</div>
         <input class="sdpi-item-value" id="stream"  type="text" onchange="onchange_stream()"
                value="" placeholder="https://www.twitch.tv/Koenvh" >
+    </div>
+    <div type="radio" class="sdpi-item">
+        <div class="sdpi-item-label">Button role</div>
+        <div class="sdpi-item-value">
+            <span class="sdpi-item-child">
+                <input id="role_item_0" type="radio" name="role"
+                    value="Start/Stop" checked >
+                <label for="role_item_0" class="sdpi-item-label">
+                    <span></span>Start/Stop
+                </label>
+            </span>
+            <span class="sdpi-item-child">
+                <input id="role_item_1" type="radio" name="role"
+                    value="Play/Pause"  >
+                <label for="role_item_1" class="sdpi-item-label">
+                    <span></span>Play/Pause
+                </label>
+            </span>
+            <span class="sdpi-item-child">
+                <input id="role_item_2" type="radio" name="role"
+                    value="Volume Up"  >
+                <label for="role_item_2" class="sdpi-item-label">
+                    <span></span>Volume Up
+                </label>
+            </span>
+            <span class="sdpi-item-child">
+                <input id="role_item_3" type="radio" name="role"
+                    value="Volume Down"  >
+                <label for="role_item_3" class="sdpi-item-label">
+                    <span></span>Volume Down
+                </label>
+            </span>
+        </div>
     </div>
 
 </div>
@@ -82,6 +115,14 @@
         } else {
             settings["stream"] = stream_el.value
         }
+        let role_el;
+        if (settings["role"] !== undefined) {
+            role_el = document.querySelector(`input[type="radio"][name="role"][value="${settings.role}"]`)
+            role_el.checked = true
+        } else {
+            role_el = document.querySelector('input[type="radio"][name="role"]:checked')
+            settings["role"] = role_el.value
+        }
 
         $PI.setSettings(settings);
     });
@@ -114,6 +155,14 @@
         } else {
             settings["stream"] = stream_el.value
         }
+        let role_el;
+        if (settings["role"] !== undefined) {
+            role_el = document.querySelector(`input[type="radio"][name="role"][value="${settings.role}"]`)
+            role_el.checked = true
+        } else {
+            role_el = document.querySelector('input[type="radio"][name="role"]:checked')
+            settings["role"] = role_el.value
+        }
     });
 
         const onchange_stream = () => {
@@ -121,6 +170,12 @@
         settings["stream"] = stream_el.value;
         $PI.setSettings(settings);
     }
+    document.addEventListener('input',(e)=>{
+        if(e.target.getAttribute('name')==="role") {
+    console.log(e.target.name, e.target.value)
+    settings["role"] = e.target.value
+    $PI.setSettings(settings);}
+    })
 
     function get_select_values_and_selected(element) {
         let values = [];

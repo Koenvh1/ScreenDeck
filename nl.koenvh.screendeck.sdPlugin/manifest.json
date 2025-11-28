@@ -23,7 +23,7 @@
   "Description": "Show a (live)stream on your StreamDeck. Combine one or multiple tiles together to turn your Stream Deck into a display you can play video on.",
   "Icon": "assets/video_icon",
   "Name": "ScreenDeck",
-  "Version": "0.3.1",
+  "Version": "0.4.0",
   "SDKVersion": 2,
   "OS": [
     {

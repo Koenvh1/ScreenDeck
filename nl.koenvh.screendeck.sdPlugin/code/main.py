@@ -23,6 +23,9 @@ class MyAction(Action):
     thread = None
     thread_id = None
 
+    paused = False
+    volume = 1.0
+
     def request_settings(self):
         for c in self.contexts:
             self.get_settings(context=c["c"])
@@ -65,13 +68,28 @@ class MyAction(Action):
     def on_key_down(self, obj: events_received_objs.KeyDown) -> None:
         self.request_settings()
 
-        t = time.time()
-        self.thread_id = t
-        if self.thread:
-            self.thread = None
+        role = obj.payload.settings["role"]
+
+        if role == "Start/Stop":
+            t = time.time()
+            self.thread_id = t
+            if self.thread:
+                self.thread = None
+            else:
+                self.thread = threading.Thread(target=self.run, args=(t,), daemon=True)
+                self.thread.start()
+        elif role == "Play/Pause":
+            self.paused = not self.paused
+        elif role == "Volume Up":
+            self.volume += 0.1
+            if self.volume > 1:
+                self.volume = 1
+        elif role == "Volume Down":
+            self.volume -= 0.1
+            if self.volume < 0:
+                self.volume = 0
         else:
-            self.thread = threading.Thread(target=self.run, args=(t,), daemon=True)
-            self.thread.start()
+            self.show_ok(obj.context)
 
     def run(self, t):
         url = self.stream
@@ -101,8 +119,13 @@ class MyAction(Action):
             "framedrop": True,
         }
         player = MediaPlayer(media, ff_opts=ff_opts)
-
         while t == self.thread_id:
+            if player.get_volume() != self.volume:
+                player.set_volume(self.volume)
+
+            if player.get_pause() != self.paused:
+                player.set_pause(self.paused)
+
             frame, val = player.get_frame()
             start = time.time()
 

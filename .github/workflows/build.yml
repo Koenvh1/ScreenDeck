@@ -14,6 +14,8 @@ jobs:
         run: Expand-Archive -Path nl.koenvh.screendeck.sdPlugin\python312-embedded.zip -DestinationPath nl.koenvh.screendeck.sdPlugin
       - name: Remove Python Embedded zip
         run: Remove-Item -Path nl.koenvh.screendeck.sdPlugin\python312-embedded.zip
+      - name: Remove lxml path due to "Unzip error"
+        run: Remove-Item -Recurse -Path nl.koenvh.screendeck.sdPlugin\python312-embedded\Lib\site-packages\lxml\isoschematron
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
